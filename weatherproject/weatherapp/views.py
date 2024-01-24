@@ -93,6 +93,8 @@ def city_detail(request):
         print(e)
         return render(request, 'weatherapp/city_detail.html', {'selected_city': selected_city, 'error_message': str(e)})
 
+
+        
 @require_GET
 def city_autocomplete(request):
     partial_city = request.GET.get('q', '')
@@ -100,9 +102,20 @@ def city_autocomplete(request):
         # Make a request to Geonames for city suggestions
         geonames_username = 'gatsby_18'
         geonames_url = f'http://api.geonames.org/searchJSON?q={partial_city}&maxRows=5&username={geonames_username}'
-        response = requests.get(geonames_url)
-        data = response.json()
-        suggestions = [city['name'] for city in data.get('geonames', [])]
-        return JsonResponse({'suggestions': suggestions})
+        
+        try:
+            response = requests.get(geonames_url)
+            response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
+            data = response.json()
+            suggestions = [city['name'] for city in data.get('geonames', [])]
+            return JsonResponse({'suggestions': suggestions})
+        except requests.exceptions.HTTPError as errh:
+            print ("Http Error:",errh)
+        except requests.exceptions.ConnectionError as errc:
+            print ("Error Connecting:",errc)
+        except requests.exceptions.Timeout as errt:
+            print ("Timeout Error:",errt)
+        except requests.exceptions.RequestException as err:
+            print ("Something went wrong:",err)
 
     return JsonResponse({'suggestions': []})
