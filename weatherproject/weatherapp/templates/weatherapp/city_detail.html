@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ selected_city }} Details | D-Weather</title>
+    <link rel="icon" type="image/png" href="{% static 'cld.png' %}" />
+    <link rel="stylesheet" href="{% static 'detail.css' %}" />
+    <!-- Add your CSS links or styles here -->
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="heading">{{ selected_city }} Details</h1>
+
+      {% if error_message %}
+      <p>Error: Entered City not present in API or is Missing some DATA</p>
+      <script>
+        // JavaScript code to handle error message and redirection
+        window.onload = function () {
+          alert("Error: {{ error_message }}");
+          window.location.href = "{% url 'home' %}";
+        };
+      </script>
+      {% else %}
+      <!-- Display detailed information for the selected city -->
+      <div class="weather">
+        <div class="condition">
+          <h2>Conditions</h2>
+          <p>Description: {{ detailed_info.description }}</p>
+          <p>Will be mainly: {{ detailed_info.main }}</p>
+          <p>Clouds: {{ detailed_info.clouds }}%</p>
+
+          <!-- Check if icon is available before displaying -->
+          {% if detailed_info.icon %}
+          <img
+            src="http://openweathermap.org/img/w/{{ detailed_info.icon }}.png"
+            width="80px"
+            alt="Weather Icon"
+          />
+          {% else %}
+          <p>Icon not available</p>
+          {% endif %}
+        </div>
+
+        <div class="temperature">
+          <h2>Temperature</h2>
+          <p>Temperature: {{ detailed_info.temp }}&#176; C</p>
+          <p>Feels Like: {{ detailed_info.temp_feels_like }}&#176; C</p>
+          <p>Min Temperature: {{ detailed_info.temp_min }}&#176; C</p>
+          <p>Max Temperature: {{ detailed_info.temp_max }}&#176; C</p>
+          <img
+            class="comp"
+            src="{% static 'Therma.png' %}"
+            alt="N/A"
+            width="20px"
+          />
+        </div>
+
+        <div class="atmospheric">
+          <h2>Atmospheric</h2>
+          <p>Pressure: {{ detailed_info.pressure }} hPa</p>
+          <p>Humidity: {{ detailed_info.humidity }}%</p>
+          <img
+            class="comp"
+            src="{% static 'humidity.png' %}"
+            alt="N/A"
+            width="30px"
+          />
+        </div>
+
+        <div class="visibility">
+          <h2>Surface Visibility</h2>
+          <img
+            class="comp"
+            src="{% static 'na_image.png' %}"
+            alt="N/A"
+            width="60px"
+          />
+          <p>Visibility: {{ detailed_info.visibility }} meters</p>
+        </div>
+
+        <div class="wind">
+          <h2>Wind</h2>
+          <p>Wind Speed: {{ detailed_info.wind_speed }} m/s</p>
+          <p>Wind Direction: {{ detailed_info.wind_degree }}&#176;</p>
+          <img
+            class="comp"
+            src="{% static 'north.png' %}"
+            alt="N/A"
+            width="45px"
+          />
+        </div>
+
+        <div class="sunrise">
+          <h2>Day & Night cycle</h2>
+          <p>Sunrise: {{ detailed_info.sunrise }}</p>
+          <p>Sunset: {{ detailed_info.sunset }}</p>
+          <img
+            class="comp"
+            src="{% static 'ss.png' %}"
+            alt="N/A"
+            width="45px"
+          />
+        </div>
+      </div>
+
+      <div class="end">
+        <a href="{% url 'home' %}" class="btn">Another City?</a>
+      </div>
+
+      <!-- <img class="comp" src="{% static 'north.png' %}" alt="N/A" width="35px" /> -->
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+:root {
+  --white: #ffffff;
+  --off-white: #e5e5e5;
+  --transp-white-1: rgba(255, 255, 255, 0.25);
+  --transp-white-2: rgba(255, 255, 255, 0.18);
+  --blue-1: #62b8f5;
+  --blue-2: #4475ef;
+  --shadow: rgba(3, 46, 87, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #8c0000;
+  margin-bottom: 15px;
+}
+
+h2 {
+  color: #8c0000;
+  font-size: 2rem;
+}
+
+.weather {
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap; /* Enable wrapping */
+  justify-content: space-between;
+}
+.condition,
+.temperature,
+.atmospheric,
+.visibility,
+.wind,
+.sunrise {
+  box-sizing: border-box;
+  flex: 1 1 calc(50% - 20px); /* Two elements per row with margin in between */
+  margin-bottom: 20px; /* Adjust margin as needed */
+  margin-right: 20px; /* Adjust margin as needed */
+  padding: 15px; /* Adjust padding as needed */
+  border-radius: 10px;
+  background: var(--transp-white-2);
+  backdrop-filter: blur(10px);
+  font-weight: bold;
+  color: #50623a;
+}
+
+/* Adjust margin between elements */
+.condition + .temperature,
+.temperature + .atmospheric,
+.atmospheric + .visibility .visibility + .wind,
+.wind + .sunrise {
+  margin-top: 0; /* Adjust margin as needed */
+}
+
+.end {
+  position: absolute;
+  top: 40px; /* Adjust the distance from the top as needed */
+  right: 20px; /* Adjust the distance from the right as needed */
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #6f0000;
+  cursor: pointer;
+  transition: 0.3s;
+  color: #ffd5e5;
+  background-color: #6f0000;
+  border-radius: 18px;
+  display: inline-block;
+  font-weight: bold; /* moved font-weight here */
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  background-color: #6f0000;
+  color: #50623a;
+}
+
+.container {
+  width: 55%;
+  max-width: 1200px;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 182, 193, 0.5),
+    rgba(223, 215, 230, 0.5),
+    rgba(255, 228, 225, 0.5)
+  );
+  backdrop-filter: blur(7.5px);
+  margin: 5rem auto;
+  padding: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  color: rgb(5, 41, 51);
+  height: 600px;
+  position: relative;
+  overflow: auto;
+}
+
+input,
+.btn ::placeholder {
+  background-color: transparent;
+  padding: 0.5rem;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid #8c0000;
+}
+body {
+  background-image: url("https://images.pexels.com/photos/6459797/pexels-photo-6459797.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover;
+  background-color: #3c0753;
+  background-repeat: no-repeat;
+  margin: 0;
+}
+
+/* Additional styles for responsiveness */
+@media (max-width: 1200px) {
+  .weather {
+    justify-content: center; /* Center elements on smaller screens */
+  }
+
+  .condition,
+  .temperature,
+  .atmospheric,
+  .visibility,
+  .wind,
+  .sunrise {
+    flex: 1 1 calc(100% - 20px); /* Full width on smaller screens */
+    margin-right: 0; /* Remove right margin */
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 1rem;
+    height: auto; /* Adjust height to auto for smaller screens */
+  }
+
+  .end {
+    top: 5px;
+    right: 5px;
+  }
+
+  .condition,
+  .temperature,
+  .atmospheric,
+  .visibility,
+  .wind,
+  .sunrise {
+    margin-bottom: 10px; /* Reduce margin on smaller screens */
+  }
+}
+@media (max-width: 768px) {
+  /* Adjust styles for smaller screens */
+  .container {
+    width: 90%;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .end {
+    top: 5px; /* Adjust for smaller screens */
+    right: 5px; /* Adjust for smaller screens */
+  }
+}

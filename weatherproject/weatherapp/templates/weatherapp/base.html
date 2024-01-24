@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D-Weather_App</title>
+    <link rel="icon" type="image/png" href="{% static 'cld.png' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    {%
+    if
+    exception_occured
+    %}
+    style="
+      background-image: url('https://images.pexels.com/photos/3008509/pexels-photo-3008509.jpeg?auto=compress&cs=tinysrgb&w=1600');
+    "
+    {%
+    else
+    %}
+    style="background-image: url('{{ image_url }}');"
+    {%
+    endif
+    %}
+  >
+    <div class="container">
+      <h1 class="heading">D-Weather</h1>
+
+      <form method="POST">
+        {% csrf_token %}
+        <input
+          type="text"
+          id="cityInput"
+          name="city"
+          placeholder="Enter a City"
+          pattern="[A-Za-z]+"
+          title="Only letters A to Z are allowed"
+        />
+        <button type="submit" class="btn">Search</button>
+      </form>
+
+      <!-- Suggestions Container -->
+      <div id="suggestionsContainer"></div>
+
+      <div class="weather">
+        <div class="left">
+          <h2 class="temp">{{ temp }}&#176; C</h2>
+          <h2 class="city">{{ city }}</h2>
+        </div>
+        <div class="right">
+          <div class="icon">
+            <p>
+              {% if exception_occured or na_image %}
+              <!-- Display na_image.png or another placeholder image when an exception occurs or city is not found -->
+              <img src="{% static 'na_image.png' %}" alt="N/A" width="80px" />
+              {% else %}
+              <!-- Display the weather icon when data is available -->
+              <img
+                src="http://openweathermap.org/img/w/{{ icon }}.png"
+                width="80px"
+              />
+              {% endif %}
+            </p>
+          </div>
+          <div class="condition">
+            <p>{{ description }}</p>
+            <p>{{ day }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if exception_occured %}
+    <script>
+      // Display an alert if city information is not available
+      window.onload = function () {
+        alert("City information is not available in the Weather API");
+      };
+    </script>
+    {% endif %}
+    <script>
+      const cityInput = document.getElementById("cityInput");
+      const suggestionsContainer = document.getElementById(
+        "suggestionsContainer"
+      );
+
+      // Event listener for input changes
+      cityInput.addEventListener("input", function () {
+        // Get the value of the input field
+        const partialCity = cityInput.value;
+
+        // Make an AJAX request to your Django view for city suggestions
+        fetch(`/city-autocomplete/?q=${partialCity}`)
+          .then((response) => response.json())
+          .then((data) => {
+            // Clear previous suggestions
+            suggestionsContainer.innerHTML = "";
+
+            // Update the suggestions in the div
+            data.suggestions.forEach((suggestion) => {
+              const suggestionElement = document.createElement("div");
+              suggestionElement.textContent = suggestion;
+              suggestionsContainer.appendChild(suggestionElement);
+
+              // Add mouseover event listener to highlight on hover
+              suggestionElement.addEventListener("mouseover", function () {
+                suggestionElement.style.backgroundColor =
+                  "rgba(34, 171, 216, 0.7)";
+                suggestionElement.style.color = "#fff";
+              });
+
+              // Add mouseout event listener to remove highlight when not hovered
+              suggestionElement.addEventListener("mouseout", function () {
+                suggestionElement.style.backgroundColor = "";
+                suggestionElement.style.color = "";
+              });
+
+              // Add click event listener to set the clicked suggestion as the input value
+              suggestionElement.addEventListener("click", function () {
+                cityInput.value = suggestion;
+                suggestionsContainer.innerHTML = "";
+              });
+            });
+          })
+          .catch((error) =>
+            console.error("Error fetching suggestions:", error)
+          );
+      });
+
+      // Add this inside the form submit event listener to redirect to the city detail page
+      document;
+      document
+        .querySelector("form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission behavior
+
+          const selectedCity = document.getElementById("cityInput").value;
+          // Redirect to the city detail page with the selected city as a query parameter
+          window.location.href = `/city-detail/?city=${selectedCity}`;
+        });
+    </script>
+  </body>
+</html>
