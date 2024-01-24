@@ -1,5 +1,5 @@
 # Weather_Forecast_App
-MVC website that enables users to check wind conditions and forecasts for one or more global locations. The website consists of two pages: the main view and the detail view. In the main view, users can search and list locations, and upon selecting a location, they are directed to the detail page. The detail page provides users with additional functionality to view comprehensive forecast information for the selected location.
+The MVC website is designed to empower users to check wind conditions and forecasts for global locations. It features a main view allowing users to search and list locations, with seamless navigation to a detailed view for in-depth forecast information upon selection. The GeoNames API enhances the search experience by providing location name suggestions, while the OpenWeather API supplies accurate weather data for the selected locations. This MVC architecture ensures a well-organized and scalable platform, separating concerns for improved maintainability and future feature expansion.
 
 # Techstack
 - Python, Django, HTML, CSS, JavaScript
